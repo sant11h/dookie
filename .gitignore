@@ -401,3 +401,4 @@ FodyWeavers.xsd
 **/Content/obj/
 riderModule.iml
 /_ReSharper.Caches/
+.idea
