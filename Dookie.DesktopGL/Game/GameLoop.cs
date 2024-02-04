@@ -8,7 +8,6 @@ namespace Dookie.DesktopGL;
 public class GameLoop : DookieGame
 {
     private Texture2D javoImage;
-    private Vector2 javoPosition;
 
     protected override void LoadContent()
     {
@@ -17,7 +16,7 @@ public class GameLoop : DookieGame
 
     protected override void Update(GameTime gameTime)
     {
-        InputManager.Update();
+        InputManager.Update(this);
 
         if (InputManager.KeyPressed(Keys.Escape))
         {
@@ -28,20 +27,28 @@ public class GameLoop : DookieGame
         {
             Engine.ToggleFullScreen();
         }
-
+        
         if (InputManager.MouseLeftButtonHeld())
         {
-            javoPosition = new Vector2(
+            var tempPosition = new Vector2(
                 InputManager.MousePosition.X - (float)javoImage.Width / 2,
                 InputManager.MousePosition.Y - (float)javoImage.Height / 2);
+
+            Console.WriteLine($"Left click position {tempPosition.X}, {tempPosition.Y}");
+            
+            Move(tempPosition.X,  tempPosition.Y);
         }
 
         if (InputManager.MouseRightButtonPressed())
         {
             var random = new Random();
-            javoPosition = new Vector2(
+            var tempPosition = new Vector2(
                 random.Next(0, Constants.DefaultWindowWidth - javoImage.Width),
                 random.Next(0, Constants.DefaultWindowHeight - javoImage.Height));
+            
+            Console.WriteLine($"Right click position {tempPosition.X}, {tempPosition.Y}");
+
+            Move(tempPosition.X,  tempPosition.Y);
         }
 
         base.Update(gameTime);
@@ -53,7 +60,7 @@ public class GameLoop : DookieGame
 
         Engine.SpriteBatch.Begin();
 
-        Engine.SpriteBatch.Draw(javoImage, javoPosition, Color.White);
+        Engine.SpriteBatch.Draw(javoImage, position, Color.White);
 
         Engine.SpriteBatch.End();
 

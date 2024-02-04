@@ -8,8 +8,10 @@ public class InputManager
     private MouseState currentMouseState, previousMouseState;
     private KeyboardState currentKeyboardState, previousKeyboardState;
 
-    public void Update()
+    public void Update(Game game)
     {
+        if (!game.IsActive) return;
+        
         previousMouseState = currentMouseState;
         previousKeyboardState = currentKeyboardState;
         currentMouseState = Mouse.GetState();
