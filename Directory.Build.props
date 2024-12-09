@@ -1,0 +1,21 @@
+<Project>
+    <PropertyGroup>
+        <TargetFrameworks>net9.0</TargetFrameworks>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <RollForward>Major</RollForward>
+        <PublishReadyToRun>false</PublishReadyToRun>
+        <TieredCompilation>false</TieredCompilation>
+
+        <!-- https://github.com/NuGet/Home/wiki/Centrally-managing-NuGet-package-versions -->
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <!-- Some general configuration applied to all projects -->
+    <PropertyGroup>
+        <RootPath>$(MSBuildThisFileDirectory)\</RootPath>
+        <DookieCorePath>$(MSBuildThisFileDirectory)\Dookie.Core</DookieCorePath>
+    </PropertyGroup>
+</Project>

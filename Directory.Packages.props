@@ -1,0 +1,12 @@
+<Project>
+   <PropertyGroup>
+        <MonoGameVersion>3.8.2.1105</MonoGameVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageVersion Include="MonoGame.Framework.DesktopGL" Version="$(MonoGameVersion)"/>
+        <PackageVersion Include="MonoGame.Content.Builder.Task" Version="$(MonoGameVersion)"/>
+
+        <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
+    </ItemGroup>
+</Project>
