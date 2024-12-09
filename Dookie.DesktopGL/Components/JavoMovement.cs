@@ -13,14 +13,12 @@ public class JavoMovement : Component, ITickable
 
     public void Tick(GameTime gameTime)
     {
-        var renderer = this.GameObject.GetComponentOrDefault<Renderer>() ?? throw new InvalidOperationException();
+        var renderer = this.GameObject.GetComponent<Renderer>();
         if (inputManager.MouseLeftButtonHeld())
         {
             var tempPosition = new Vector2(
                 inputManager.MousePosition.X - (float)renderer.Texture.Width / 2,
                 inputManager.MousePosition.Y - (float)renderer.Texture.Height / 2);
-
-            Console.WriteLine($"Left click position {tempPosition.X}, {tempPosition.Y}");
 
             this.Transform.Position = tempPosition;
         }

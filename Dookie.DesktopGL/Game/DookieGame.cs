@@ -16,7 +16,7 @@ public class DookieGame : Game
         Engine = this.InitializeEngine();
         InputManager = this.Services.GetService<InputManager>();
 
-        HubConnection = new HubConnectionBuilder().WithUrl("http://192.168.1.6:5070/position").Build();
+        HubConnection = new HubConnectionBuilder().WithUrl("http://localhost:5070/position").Build();
         HubConnection.On<float, float>("UpdatePosition", (x, y) => 
         {
             position.X = x;

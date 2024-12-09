@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 
-class PositionHub : Hub
+internal class PositionHub : Hub
 {
     private readonly ILogger<PositionHub> _logger;
     private float _x;

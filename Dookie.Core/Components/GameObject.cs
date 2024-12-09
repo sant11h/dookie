@@ -41,6 +41,18 @@ public class GameObject : ITickable, IDrawable
         return null;
     }
 
+    public T GetComponent<T>()
+        where T : Component
+    {
+        var component = this.GetComponentOrDefault<T>();
+        if (component is null)
+        {
+            throw new InvalidOperationException($"The component {typeof(T).Name} is not attached to this GameObject.");
+        }
+
+        return component;
+    }
+
     public void Tick(GameTime gameTime)
     {
         foreach (var tickableComponent in this.TickableComponents)
