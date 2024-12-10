@@ -13,16 +13,17 @@ public class DookieGame : Game
 
     protected DookieGame()
     {
+        // initialize engine
         Engine = this.InitializeEngine();
         InputManager = this.Services.GetService<InputManager>();
 
+        // initialize connection with SignalR server
         HubConnection = new HubConnectionBuilder().WithUrl("http://localhost:5070/position").Build();
         HubConnection.On<float, float>("UpdatePosition", (x, y) => 
         {
             position.X = x;
             position.Y = y;
         });
-
         HubConnection.StartAsync();
     }
 
