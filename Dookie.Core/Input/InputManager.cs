@@ -46,4 +46,9 @@ public class InputManager
     {
         return currentKeyboardState.IsKeyDown(k) && previousKeyboardState.IsKeyUp(k);
     }
+    
+    public bool KeyHeld(Keys k)
+    {
+        return currentKeyboardState.IsKeyDown(k);
+    }
 }

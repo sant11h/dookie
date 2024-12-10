@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Dookie.Core.Components;
+namespace Dookie.Core;
 
 public class GameObject : ITickable, IDrawable
 {
@@ -9,6 +9,15 @@ public class GameObject : ITickable, IDrawable
     private List<Component> Components { get; } = [];
     private List<IDrawable> DrawableComponents { get; } = [];
     private List<ITickable> TickableComponents { get; } = [];
+
+    public GameObject()
+    {
+    }
+    
+    public GameObject(Transform transform)
+    {
+        this.Transform = transform;
+    }
 
     public void AddComponent(Component component)
     {

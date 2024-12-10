@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Dookie.Core.Components;
+namespace Dookie.Core;
 
 public interface ITickable
 {
