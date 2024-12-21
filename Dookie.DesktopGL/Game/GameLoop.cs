@@ -24,19 +24,11 @@ public class GameLoop : DookieGame
         }
 
         backgroundTexture.SetData(colors);
-        var backgroundGameObject = new GameObject
-        {
-            Transform =
-            {
-                Body = new Rectangle(
-                    0,
-                    0,
-                    Engine.Graphics.PreferredBackBufferWidth,
-                    Engine.Graphics.PreferredBackBufferHeight)
-            }
-        };
-
-        backgroundGameObject.AddComponent(new RectangleRenderer(backgroundTexture));
+        var backgroundGameObject = new GameObject();
+        backgroundGameObject.AddComponent(
+            new Renderer(
+                backgroundTexture,
+                new Rectangle(0, 0, Engine.Graphics.PreferredBackBufferWidth, Engine.Graphics.PreferredBackBufferHeight)));
 
         // paddles
         const int paddleHeight = 30;
@@ -52,11 +44,14 @@ public class GameLoop : DookieGame
             Transform =
             {
                 Position = new Vector2(firstPaddlePositionX, firstPaddlePositionY),
-                Body = new Rectangle((int)firstPaddlePositionX, firstPaddlePositionY, paddleWidth, paddleHeight),
-                Color = Color.Plum
             }
         };
-        firstPaddleGameObject.AddComponent(new Renderer(paddleTexture));
+        firstPaddleGameObject.AddComponent(
+            new Renderer(
+                paddleTexture,
+                new Rectangle((int)firstPaddlePositionX, firstPaddlePositionY, paddleWidth, paddleHeight),
+                Color.Plum));
+
         firstPaddleGameObject.AddComponent(new PaddleMovement(InputManager, Engine.Graphics, Keys.Left, Keys.Right, Keys.Down));
         
         // second paddle
@@ -67,11 +62,13 @@ public class GameLoop : DookieGame
             Transform =
             {
                 Position = new Vector2(secondPaddlePositionX , secondPaddlePositionY),
-                Body = new Rectangle((int)secondPaddlePositionX, secondPaddlePositionY, paddleWidth, paddleHeight),
-                Color = Color.Plum
             }
         };
-        secondPaddleGameObject.AddComponent(new Renderer(paddleTexture));
+        secondPaddleGameObject.AddComponent(
+            new Renderer(
+                paddleTexture,
+                new Rectangle((int)secondPaddlePositionX, secondPaddlePositionY, paddleWidth, paddleHeight),
+                Color.Plum));
         secondPaddleGameObject.AddComponent(new PaddleMovement(InputManager, Engine.Graphics, Keys.A, Keys.D, Keys.S));
         
         // ball
@@ -87,18 +84,15 @@ public class GameLoop : DookieGame
             Transform =
             {
                 Position = new Vector2(ballPositionX,ballPositionY),
-                Body = new Rectangle((int)ballPositionX, (int)ballPositionY, ballHeight, ballWidth),
-                Color = Color.Plum,
-                Direction = Vector2.Normalize(VectorUtilities.RandomDirection())
             }
         };
         
-        ballGameObject.AddComponent(new Renderer(ballTexture));
+        ballGameObject.AddComponent(new Renderer(ballTexture, new Rectangle((int)ballPositionX, (int)ballPositionY, ballHeight, ballWidth), Color.Plum));
         ballGameObject.AddComponent(new BallMovement(InputManager, Engine.Graphics));
         
         // add collision between ball and paddles
-        firstPaddleGameObject.AddComponent(new PaddleAndBallCollider(ballGameObject.Transform));
-        secondPaddleGameObject.AddComponent(new PaddleAndBallCollider(ballGameObject.Transform));
+        firstPaddleGameObject.AddComponent(new PaddleAndBallCollider(ballGameObject));
+        secondPaddleGameObject.AddComponent(new PaddleAndBallCollider(ballGameObject));
         
         // Add game objects
         gameObjects.Add(backgroundGameObject);

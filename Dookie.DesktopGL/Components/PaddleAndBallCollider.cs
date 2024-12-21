@@ -3,13 +3,20 @@ using Microsoft.Xna.Framework;
 
 namespace Dookie.DesktopGL;
 
-public class PaddleAndBallCollider(Transform ballTransform) : Component, ITickable
+public class PaddleAndBallCollider(GameObject ballGameObject) : Component, ITickable
 {
     public void Tick(GameTime gameTime)
     {
-        if (this.Transform.Body.Intersects(ballTransform.Body))
+        var paddleRenderer = this.GameObject.GetComponent<Renderer>();
+        var ballRenderer = ballGameObject.GetComponent<Renderer>();
+        var ballMovement = ballGameObject.GetComponent<BallMovement>();
+
+        if (paddleRenderer.Body.Intersects(ballRenderer.Body))
         {
-            ballTransform.Direction = new Vector2(ballTransform.Direction.X, ballTransform.Direction.Y * -1);
+            ballMovement.Direction = 
+                new Vector2(
+                    ballMovement.Direction.X,
+                    ballMovement.Direction.Y * -1);
         }
     }
 }

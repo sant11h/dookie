@@ -26,12 +26,14 @@ public class PaddleMovement(
 
         var updatedSpeed = speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+        var renderer = this.GameObject.GetComponent<Renderer>();
+
         if (inputManager.KeyHeld(leftKey))
         {
             var tempPosition =
                 new Vector2(
                     Math.Clamp(this.Transform.Position.X - updatedSpeed, 0,
-                        graphics.PreferredBackBufferWidth - this.Transform.Body.Width), this.Transform.Position.Y);
+                        graphics.PreferredBackBufferWidth - renderer.Body.Width), this.Transform.Position.Y);
 
             this.Transform.Position = tempPosition;
         }
@@ -41,11 +43,11 @@ public class PaddleMovement(
             var tempPosition =
                 new Vector2(
                     Math.Clamp(this.Transform.Position.X + updatedSpeed, 0,
-                        graphics.PreferredBackBufferWidth - this.Transform.Body.Width), this.Transform.Position.Y);
+                        graphics.PreferredBackBufferWidth - renderer.Body.Width), this.Transform.Position.Y);
 
             this.Transform.Position = tempPosition;
         }
         
-        this.Transform.Body = new Rectangle((int)this.Transform.Position.X,(int)this.Transform.Position.Y, this.Transform.Body.Width, this.Transform.Body.Height);
+        renderer.Body = new Rectangle((int)this.Transform.Position.X,(int)this.Transform.Position.Y, renderer.Body.Width,renderer.Body.Height);
     }
 }
