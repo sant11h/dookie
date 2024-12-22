@@ -8,12 +8,10 @@ public class DookieGame : Game
 {
     internal readonly Engine Engine;
     internal readonly InputManager InputManager;
-    internal readonly ClientNetworkManager ClientNetworkManager;
 
     protected DookieGame()
     {
         Engine = this.InitializeEngine();
         InputManager = this.Services.GetService<InputManager>();
-        ClientNetworkManager = this.Services.GetService<ClientNetworkManager>();
     }
 }

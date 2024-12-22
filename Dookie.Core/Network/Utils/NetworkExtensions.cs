@@ -12,8 +12,11 @@ public static class NetworkExtensions
     }
 
     public static Vector2 GetVector2(this NetDataReader reader)
-    {
-       return new Vector2(reader.GetFloat(), reader.GetFloat());
+    { 
+        var x = reader.GetFloat(); 
+        var y = reader.GetFloat();
+        
+        return new Vector2(float.IsNaN(x) ? 0 : x, float.IsNaN(y) ? 0 : y);
     }
 
     public static T GetRandomElement<T>(this T[] array)

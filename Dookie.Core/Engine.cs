@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Dookie.Core.Network;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Dookie.Core;

@@ -3,15 +3,13 @@
 public class ClientPlayerManager : BasePlayerManager
 {
     public readonly Dictionary<byte, PlayerHandler> Players;
-    private readonly ClientNetworkManager _clientLogic;
     private ClientPlayer _clientPlayer;
 
     public ClientPlayer? CurrentPlayer => _clientPlayer;
     public override int Count => Players.Count;
 
-    public ClientPlayerManager(ClientNetworkManager clientLogic)
+    public ClientPlayerManager()
     {
-        _clientLogic = clientLogic;
         Players = new Dictionary<byte, PlayerHandler>();
     }
         

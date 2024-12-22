@@ -110,7 +110,7 @@ public class ServerNetworkManager : INetEventListener
         var player = new ServerPlayer(_playerManager, joinPacket.UserName, peer);
         _playerManager.AddPlayer(player);
 
-        player.Spawn(new Vector2(0,0));
+        player.Spawn(Vector2.Zero);
 
         //Send join accept
         var ja = new JoinAcceptPacket { Id = player.Id, ServerTick = _serverTick };

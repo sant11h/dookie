@@ -11,10 +11,13 @@ public class GameLoop : DookieGame
 {
     private readonly List<GameObject> gameObjects = [];
     private ServerNetworkManager ServerNetworkManager;
+    private ClientNetworkManager ClientNetworkManager;
     
 
     protected override void LoadContent()
     {
+        // TODO: Properly mode to wherever it belongs
+        ClientNetworkManager = new ClientNetworkManager(this, gameObjects, Engine.Graphics);
         // start server
         ServerNetworkManager = new ServerNetworkManager();
         ServerNetworkManager.Start();
@@ -39,29 +42,6 @@ public class GameLoop : DookieGame
             new Renderer(
                 backgroundTexture,
                 new Rectangle(0, 0, Engine.Graphics.PreferredBackBufferWidth, Engine.Graphics.PreferredBackBufferHeight)));
-
-        // paddles
-        const int paddleHeight = 30;
-        const int paddleWidth = 150;
-        var paddleTexture = new Texture2D(Engine.Graphics.GraphicsDevice, 1, 1);
-        paddleTexture.SetData([Color.White]);
-        
-        // first paddle
-        var firstPaddlePositionX = Engine.Graphics.PreferredBackBufferWidth / 2f - paddleWidth / 2f;
-        var firstPaddlePositionY = Engine.Graphics.PreferredBackBufferHeight - paddleHeight;
-        var firstPaddleGameObject = new GameObject
-        {
-            Transform =
-            {
-                Position = new Vector2(firstPaddlePositionX, firstPaddlePositionY),
-            }
-        };
-        
-        firstPaddleGameObject.AddComponent(
-            new Renderer(
-                paddleTexture,
-                new Rectangle((int)firstPaddlePositionX, firstPaddlePositionY, paddleWidth, paddleHeight),
-                Color.Plum));
 
         // firstPaddleGameObject.AddComponent(new PaddleMovement(InputManager, Engine.Graphics, Keys.Left, Keys.Right, Keys.Down));
         
@@ -107,7 +87,6 @@ public class GameLoop : DookieGame
         
         // Add game objects
         gameObjects.Add(backgroundGameObject);
-        gameObjects.Add(firstPaddleGameObject);
         // gameObjects.Add(secondPaddleGameObject);
         // gameObjects.Add(ballGameObject);
     }

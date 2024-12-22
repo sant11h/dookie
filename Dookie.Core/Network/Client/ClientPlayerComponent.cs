@@ -41,6 +41,7 @@ public class ClientPlayerComponent(ClientPlayer clientPlayer, InputManager input
         clientPlayer.SetInput(velocity, 0);
 
         var lerpT = ClientNetworkManager.LogicTimer.LerpAlpha;
+        
         this.Transform.Position = Vector2.Lerp(clientPlayer.LastPosition, clientPlayer.Position, lerpT);
         // renderer.Body = new Rectangle((int)this.Transform.Position.X,(int)this.Transform.Position.Y, renderer.Body.Width,renderer.Body.Height);
     }

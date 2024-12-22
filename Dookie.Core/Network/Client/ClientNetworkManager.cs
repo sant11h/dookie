@@ -3,13 +3,16 @@ using System.Net.Sockets;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Dookie.Core.Network;
 
 public class ClientNetworkManager : INetEventListener
 {
     private Game game;
-    
+    private readonly List<GameObject> gameObjects;
+    private readonly GraphicsDeviceManager graphics;
+
     public readonly NetManager Client;
     private NetDataWriter dataWriter;
     private NetPacketProcessor packetProcessor;
@@ -24,15 +27,17 @@ public class ClientNetworkManager : INetEventListener
     private int ping;
     public static LogicTimer LogicTimer { get; private set; }
 
-    public ClientNetworkManager(Game game)
+    public ClientNetworkManager(Game game, List<GameObject> gameObjects, GraphicsDeviceManager graphics)
     {
         this.game = game;
+        this.gameObjects = gameObjects;
+        this.graphics = graphics;
         var r = new Random();
         cachedServerState = new ServerState();
         userName = Environment.MachineName + " " + r.Next(100000);
         LogicTimer = new LogicTimer(OnLogicUpdate);
         dataWriter = new NetDataWriter();
-        playerManager = new ClientPlayerManager(this);
+        playerManager = new ClientPlayerManager();
         // shootsPool = new GamePool<ShootEffect>(ShootEffectContructor, 100);
         packetProcessor = new NetPacketProcessor();
         packetProcessor.RegisterNestedType((w, v) => w.Put(v), reader => reader.GetVector2());
@@ -89,18 +94,13 @@ public class ClientNetworkManager : INetEventListener
     {
         Client.PollEvents();
         LogicTimer.Update();
-        if (playerManager.CurrentPlayer != null)
+        /*if (playerManager.CurrentPlayer != null)
             Console.WriteLine(string.Format(
                 $"LastServerTick: {lastServerTick}\n" +
                 $"StoredCommands: {playerManager.CurrentPlayer.StoredCommands}\n" +
                 $"Ping: {ping}"));
         else
-            Console.WriteLine("Disconnected");
-        
-        foreach (var playerManagerPlayer in playerManager.Players)
-        {
-            playerManagerPlayer.Value.View.Tick(gameTime);
-        }
+            Console.WriteLine("Disconnected");*/
     }
 
     private void OnDestroy()
@@ -127,8 +127,42 @@ public class ClientNetworkManager : INetEventListener
         Console.WriteLine("[C] Join accept. Received player id: " + packet.Id);
         lastServerTick = packet.ServerTick;
         var clientPlayer = new ClientPlayer(this, playerManager, userName, packet.Id);
-        var view = new ClientPlayerComponent(clientPlayer, game.Services.GetService<InputManager>());
-        playerManager.AddClientPlayer(clientPlayer, view);
+        var clientPlayerComponent = InstantiatePlayerGameObject(clientPlayer);
+        playerManager.AddClientPlayer(clientPlayer, clientPlayerComponent);
+    }
+
+    private ClientPlayerComponent InstantiatePlayerGameObject(ClientPlayer clientPlayer)
+    {
+        // paddles
+        const int paddleHeight = 30;
+        const int paddleWidth = 150;
+        var paddleTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
+        paddleTexture.SetData([Color.White]);
+        
+        // first paddle
+        var firstPaddlePositionX = graphics.PreferredBackBufferWidth / 2f - paddleWidth / 2f;
+        var firstPaddlePositionY = graphics.PreferredBackBufferHeight - paddleHeight;
+        var firstPaddleGameObject = new GameObject
+        {
+            Transform =
+            {
+                Position = new Vector2(0, 0),
+            }
+        };
+        
+        firstPaddleGameObject.AddComponent(
+            new Renderer(
+                paddleTexture,
+                new Rectangle((int)firstPaddlePositionX, firstPaddlePositionY, paddleWidth, paddleHeight),
+                Color.Plum));
+
+        var clientPlayerComponent = new ClientPlayerComponent(clientPlayer,
+            game.Services.GetService<InputManager>());
+        firstPaddleGameObject.AddComponent(clientPlayerComponent);
+        
+        gameObjects.Add(firstPaddleGameObject);
+
+        return clientPlayerComponent;
     }
 
     public void OnPeerConnected(NetPeer peer)

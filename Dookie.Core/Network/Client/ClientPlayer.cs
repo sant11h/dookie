@@ -71,11 +71,6 @@ public class ClientPlayer : BasePlayer
         }
     }
 
-    public override void Spawn(Vector2 position)
-    {
-        base.Spawn(position);
-    }
-
     public void SetInput(Vector2 velocity, float rotation)
     {
         _nextCommand.Keys = 0;

@@ -6,11 +6,11 @@ public abstract class BasePlayer
 {
     public readonly string Name;
 
-    private float _speed = 3f;
+    private float _speed = 300f;
     private GameTimer _shootTimer = new(0.2f);
     private BasePlayerManager _playerManager;
 
-    protected Vector2 position;
+    protected Vector2 position = Vector2.Zero;
     protected float rotation;
 
     public const float Radius = 0.5f;
@@ -42,19 +42,25 @@ public abstract class BasePlayer
 
     public virtual void ApplyInput(PlayerInputPacket command, float delta)
     {
-        var velocity = Vector2.Zero;
+        var direction = Vector2.Zero;
 
         if ((command.Keys & MovementKeys.Up) != 0)
-            velocity.Y = -1f;
+            direction.Y = -1f;
         if ((command.Keys & MovementKeys.Down) != 0)
-            velocity.Y = 1f;
-
+            direction.Y = 1f;
         if ((command.Keys & MovementKeys.Left) != 0)
-            velocity.X = -1f;
+            direction.X = -1f;
         if ((command.Keys & MovementKeys.Right) != 0)
-            velocity.X = 1f;
+            direction.X = 1f;
 
-        position += Vector2.Normalize(velocity * _speed * delta);
+        if (direction != Vector2.Zero)
+        {
+            direction.Normalize();
+        }
+        
+        Console.WriteLine($"{direction}");
+        var velocity = direction * _speed * delta;
+        position += velocity;
 
         // if ((command.Keys & MovementKeys.Fire) != 0)
         // {

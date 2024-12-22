@@ -16,6 +16,5 @@ public static class GameExtensions
     public static void ConfigureServices(this Game game)
     {
         game.Services.AddService(new InputManager());
-        game.Services.AddService(new ClientNetworkManager(game));
     }
 }
