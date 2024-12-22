@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dookie.DesktopGL", "Dookie.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dookie.SignalR", "Dookie.SignalR\Dookie.SignalR.csproj", "{5F97A7A2-E0EA-41D5-9A85-4D78AAB2F8BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dookie.Server", "Dookie.Server\Dookie.Server.csproj", "{9B50955F-B8FC-40A4-BB95-B7A26508A772}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{5F97A7A2-E0EA-41D5-9A85-4D78AAB2F8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F97A7A2-E0EA-41D5-9A85-4D78AAB2F8BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F97A7A2-E0EA-41D5-9A85-4D78AAB2F8BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B50955F-B8FC-40A4-BB95-B7A26508A772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B50955F-B8FC-40A4-BB95-B7A26508A772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B50955F-B8FC-40A4-BB95-B7A26508A772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B50955F-B8FC-40A4-BB95-B7A26508A772}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

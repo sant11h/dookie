@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Dookie.Core.Network;
+using Microsoft.Xna.Framework;
 
 namespace Dookie.Core;
 
@@ -15,5 +16,6 @@ public static class GameExtensions
     public static void ConfigureServices(this Game game)
     {
         game.Services.AddService(new InputManager());
+        game.Services.AddService(new ClientNetworkManager(game));
     }
 }
