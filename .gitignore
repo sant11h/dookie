@@ -402,3 +402,6 @@ FodyWeavers.xsd
 riderModule.iml
 /_ReSharper.Caches/
 .idea
+
+# .NET binaries
+.dotnet/
