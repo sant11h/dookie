@@ -1,4 +1,6 @@
-﻿namespace Dookie.Core.Network;
+﻿using Dookie.Core.Network;
+
+namespace Dookie.DesktopGL;
 
 public class ClientPlayerManager : BasePlayerManager
 {

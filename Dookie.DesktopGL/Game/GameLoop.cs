@@ -9,18 +9,15 @@ namespace Dookie.DesktopGL;
 
 public class GameLoop : DookieGame
 {
-    private readonly List<GameObject> gameObjects = [];
-    private ServerNetworkManager ServerNetworkManager;
+    public readonly List<GameObject> GameObjects = [];
     private ClientNetworkManager ClientNetworkManager;
     
 
     protected override void LoadContent()
     {
-        // TODO: Properly mode to wherever it belongs
-        ClientNetworkManager = new ClientNetworkManager(this, gameObjects, Engine.Graphics);
-        // start server
-        ServerNetworkManager = new ServerNetworkManager();
-        ServerNetworkManager.Start();
+        ClientNetworkManager = new ClientNetworkManager(this);
+        // ServerNetworkManager = new ServerNetworkManager();
+        // ServerNetworkManager.Start();
         
         ClientNetworkManager.Connect("localhost", OnDisconnect);
         
@@ -86,7 +83,7 @@ public class GameLoop : DookieGame
         // secondPaddleGameObject.AddComponent(new PaddleAndBallCollider(ballGameObject));
         
         // Add game objects
-        gameObjects.Add(backgroundGameObject);
+        GameObjects.Add(backgroundGameObject);
         // gameObjects.Add(secondPaddleGameObject);
         // gameObjects.Add(ballGameObject);
     }
@@ -110,10 +107,9 @@ public class GameLoop : DookieGame
             Engine.ToggleFullScreen();
         }
 
-        ServerNetworkManager.Update();
         ClientNetworkManager.Update(gameTime);
 
-        foreach (var gameObject in gameObjects)
+        foreach (var gameObject in GameObjects)
         {
             gameObject.Tick(gameTime);
         }
@@ -127,7 +123,7 @@ public class GameLoop : DookieGame
 
         Engine.SpriteBatch.Begin();
         
-        foreach (var gameObject in gameObjects)
+        foreach (var gameObject in GameObjects)
         {
             gameObject.Draw(Engine.SpriteBatch);
         }

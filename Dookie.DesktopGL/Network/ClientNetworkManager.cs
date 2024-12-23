@@ -1,17 +1,17 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using Dookie.Core;
+using Dookie.Core.Network;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Dookie.Core.Network;
+namespace Dookie.DesktopGL;
 
 public class ClientNetworkManager : INetEventListener
 {
-    private Game game;
-    private readonly List<GameObject> gameObjects;
-    private readonly GraphicsDeviceManager graphics;
+    private GameLoop game;
 
     public readonly NetManager Client;
     private NetDataWriter dataWriter;
@@ -27,14 +27,11 @@ public class ClientNetworkManager : INetEventListener
     private int ping;
     public static LogicTimer LogicTimer { get; private set; }
 
-    public ClientNetworkManager(Game game, List<GameObject> gameObjects, GraphicsDeviceManager graphics)
+    public ClientNetworkManager(GameLoop game)
     {
         this.game = game;
-        this.gameObjects = gameObjects;
-        this.graphics = graphics;
-        var r = new Random();
         cachedServerState = new ServerState();
-        userName = Environment.MachineName + " " + r.Next(100000);
+        userName = Environment.MachineName + " " + Random.Shared.Next(100000);
         LogicTimer = new LogicTimer(OnLogicUpdate);
         dataWriter = new NetDataWriter();
         playerManager = new ClientPlayerManager();
@@ -112,8 +109,8 @@ public class ClientNetworkManager : INetEventListener
     {
         Console.WriteLine($"[C] Player joined: {packet.UserName}");
         var remotePlayer = new RemotePlayer(playerManager, packet.UserName, packet);
-        var view = new RemotePlayerComponent(remotePlayer);
-        playerManager.AddPlayer(remotePlayer, view);
+        var remotePlayerComponent = InstantiatePlayerGameObject(remotePlayer);
+        playerManager.AddPlayer(remotePlayer, remotePlayerComponent);
     }
     
     private void OnPlayerLeaved(PlayerLeavedPacket packet)
@@ -136,12 +133,12 @@ public class ClientNetworkManager : INetEventListener
         // paddles
         const int paddleHeight = 30;
         const int paddleWidth = 150;
-        var paddleTexture = new Texture2D(graphics.GraphicsDevice, 1, 1);
+        var paddleTexture = new Texture2D(game.Engine.Graphics.GraphicsDevice, 1, 1);
         paddleTexture.SetData([Color.White]);
         
         // first paddle
-        var firstPaddlePositionX = graphics.PreferredBackBufferWidth / 2f - paddleWidth / 2f;
-        var firstPaddlePositionY = graphics.PreferredBackBufferHeight - paddleHeight;
+        var firstPaddlePositionX = game.Engine.Graphics.PreferredBackBufferWidth / 2f - paddleWidth / 2f;
+        var firstPaddlePositionY = game.Engine.Graphics.PreferredBackBufferHeight - paddleHeight;
         var firstPaddleGameObject = new GameObject
         {
             Transform =
@@ -160,7 +157,40 @@ public class ClientNetworkManager : INetEventListener
             game.Services.GetService<InputManager>());
         firstPaddleGameObject.AddComponent(clientPlayerComponent);
         
-        gameObjects.Add(firstPaddleGameObject);
+        game.GameObjects.Add(firstPaddleGameObject);
+
+        return clientPlayerComponent;
+    }
+    
+    private RemotePlayerComponent InstantiatePlayerGameObject(RemotePlayer remotePlayer)
+    {
+        // paddles
+        const int paddleHeight = 30;
+        const int paddleWidth = 150;
+        var paddleTexture = new Texture2D(game.Engine.Graphics.GraphicsDevice, 1, 1);
+        paddleTexture.SetData([Color.White]);
+        
+        // first paddle
+        var firstPaddlePositionX = game.Engine.Graphics.PreferredBackBufferWidth / 2f - paddleWidth / 2f;
+        var firstPaddlePositionY = game.Engine.Graphics.PreferredBackBufferHeight - paddleHeight;
+        var firstPaddleGameObject = new GameObject
+        {
+            Transform =
+            {
+                Position = new Vector2(0, 0),
+            }
+        };
+        
+        firstPaddleGameObject.AddComponent(
+            new Renderer(
+                paddleTexture,
+                new Rectangle((int)firstPaddlePositionX, firstPaddlePositionY, paddleWidth, paddleHeight),
+                Color.Plum));
+
+        var clientPlayerComponent = new RemotePlayerComponent(remotePlayer);
+        firstPaddleGameObject.AddComponent(clientPlayerComponent);
+        
+        game.GameObjects.Add(firstPaddleGameObject);
 
         return clientPlayerComponent;
     }

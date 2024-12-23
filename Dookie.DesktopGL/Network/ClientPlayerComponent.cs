@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Dookie.Core;
+using Dookie.Core.Network;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Dookie.Core.Network;
-
-public interface ITickableComponent : IPlayerView, ITickable;
+namespace Dookie.DesktopGL;
 
 public class ClientPlayerComponent(ClientPlayer clientPlayer, InputManager inputManager) : Component, ITickableComponent
 {
@@ -14,18 +14,7 @@ public class ClientPlayerComponent(ClientPlayer clientPlayer, InputManager input
 
     public void Tick(GameTime gameTime)
     {
-        var speed = 400f;
-
-        if (inputManager.KeyHeld(Keys.Down))
-        {
-            speed *= 2;
-        }
-        else
-        {
-            speed = 400f;
-        }
-        
-        var updatedSpeed = speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        var speedUp = inputManager.KeyHeld(Keys.Space);
         
         var velocity = Vector2.Zero;
         if (inputManager.KeyHeld(Keys.Left))
@@ -35,10 +24,10 @@ public class ClientPlayerComponent(ClientPlayer clientPlayer, InputManager input
 
         if (inputManager.KeyHeld(Keys.Right))
         {
-            velocity = new Vector2(0, 1);
+            velocity = new Vector2(1, 0);
         }
 
-        clientPlayer.SetInput(velocity, 0);
+        clientPlayer.SetInput(velocity, speedUp);
 
         var lerpT = ClientNetworkManager.LogicTimer.LerpAlpha;
         

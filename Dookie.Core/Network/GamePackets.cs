@@ -60,8 +60,7 @@ public enum MovementKeys : byte
 {
     Left = 1 << 1,
     Right = 1 << 2,
-    Up = 1 << 3,
-    Down = 1 << 4,
+    SpeedUp = 1 << 3,
 }
 
 public struct PlayerInputPacket : INetSerializable

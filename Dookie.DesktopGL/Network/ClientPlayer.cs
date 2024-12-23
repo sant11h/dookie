@@ -1,7 +1,8 @@
-﻿using LiteNetLib;
+﻿using Dookie.Core.Network;
+using LiteNetLib;
 using Microsoft.Xna.Framework;
 
-namespace Dookie.Core.Network;
+namespace Dookie.DesktopGL;
 
 public class ClientPlayer : BasePlayer
 {
@@ -71,7 +72,7 @@ public class ClientPlayer : BasePlayer
         }
     }
 
-    public void SetInput(Vector2 velocity, float rotation)
+    public void SetInput(Vector2 velocity, bool speedUp)
     {
         _nextCommand.Keys = 0;
 
@@ -79,10 +80,8 @@ public class ClientPlayer : BasePlayer
             _nextCommand.Keys |= MovementKeys.Left;
         if (velocity.X > 0.5f)
             _nextCommand.Keys |= MovementKeys.Right;
-        if (velocity.Y < -0.5f)
-            _nextCommand.Keys |= MovementKeys.Up;
-        if (velocity.Y > 0.5f)
-            _nextCommand.Keys |= MovementKeys.Down;
+        if (speedUp)
+            _nextCommand.Keys |= MovementKeys.SpeedUp;
 
         _nextCommand.Rotation = rotation;
     }

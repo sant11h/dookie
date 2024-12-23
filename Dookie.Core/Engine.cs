@@ -17,7 +17,7 @@ public class Engine
         this.game = game;
         Graphics = new GraphicsDeviceManager(game);
         game.Content.RootDirectory = "Content";
-        game.IsMouseVisible = true;
+        game.IsMouseVisible = false;
         WindowSize = new Point(Constants.DefaultWindowWidth, Constants.DefaultWindowHeight);
         Graphics.PreferredBackBufferWidth = WindowSize.X;
         Graphics.PreferredBackBufferHeight = WindowSize.Y;

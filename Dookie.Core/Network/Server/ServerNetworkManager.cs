@@ -47,7 +47,7 @@ public class ServerNetworkManager : INetEventListener
         _logicTimer.Start();
     }
 
-    private void OnDestroy()
+    public void Stop()
     {
         _netManager.Stop();
         _logicTimer.Stop();

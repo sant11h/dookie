@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Dookie.Core;
+using Dookie.Core.Network;
+using Microsoft.Xna.Framework;
 
-namespace Dookie.Core.Network;
+namespace Dookie.DesktopGL;
 
 public class RemotePlayerComponent(RemotePlayer remotePlayer) : Component, ITickableComponent
 {
